@@ -7,7 +7,7 @@ const shortUrlModel = new Model('shortened_url');
 
 const getUrlByShortUrl = asyncHandler(async (req, res) => {
 	const { surl } = req.params;
-	console.log(surl);
+
 	try {
 		const { rows } = await shortUrlModel.query(shortUrlModel.findLongUrl, [
 			surl,
@@ -40,7 +40,7 @@ const createShortUrl = asyncHandler(async (req, res) => {
 					hashedUrl,
 				]);
 				errorCode = null;
-				res.send({
+				res.status(201).json({
 					shortUrl: `http://${req.headers.host}/${hashedUrl}`,
 				});
 			} catch (error) {
