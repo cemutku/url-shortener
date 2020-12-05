@@ -14,10 +14,11 @@ const getUrlByShortUrl = asyncHandler(async (req, res) => {
 		]);
 
 		if (rows && rows.length > 0) {
-			res.status(200).json({ result: rows });
+			const { long_url } = rows[0];
+			res.redirect(301, long_url);
 		} else {
-			res.status(404);
-			throw new Error('Url not found');
+			console.log('not found');
+			res.status(404).json({ message: 'Url not found' });
 		}
 	} catch (error) {
 		res.status(500);
