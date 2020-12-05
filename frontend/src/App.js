@@ -6,9 +6,11 @@ import Main from './components/Main';
 const App = () => {
 	return (
 		<>
-			<Header />
-			<Main />
-			<Footer />
+			<div className='app-container'>
+				<Header />
+				<Main />
+				<Footer />
+			</div>
 		</>
 	);
 };

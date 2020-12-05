@@ -1,7 +1,11 @@
 import React from 'react';
 
 const Footer = () => {
-	return <footer>This is a footer.</footer>;
+	return (
+		<footer>
+			<p>Copyright &copy; Url Shortener Service</p>
+		</footer>
+	);
 };
 
 export default Footer;
