@@ -13,9 +13,15 @@ const getUrlByShortUrl = asyncHandler(async (req, res) => {
 			surl,
 		]);
 
-		res.status(200).json({ result: rows });
+		if (rows && rows.length > 0) {
+			res.status(200).json({ result: rows });
+		} else {
+			res.status(404);
+			throw new Error('Url not found');
+		}
 	} catch (error) {
-		res.status(500).json({ messages: error.stack });
+		res.status(500);
+		throw new Error('Cannot get url!');
 	}
 });
 
@@ -34,11 +40,11 @@ const createShortUrl = asyncHandler(async (req, res) => {
 				);
 
 				let hashedUrl = await nanoid();
-
 				await shortUrlModel.query(shortUrlModel.insertShortUrl, [
 					url,
 					hashedUrl,
 				]);
+
 				errorCode = null;
 				res.status(201).json({
 					shortUrl: `http://${req.headers.host}/${hashedUrl}`,
@@ -47,8 +53,10 @@ const createShortUrl = asyncHandler(async (req, res) => {
 				const { code, constraint } = error;
 				if (code === '23505' && constraint == 'shortened_url_pkey') {
 					errorCode = code;
+				} else {
+					res.status(500);
+					throw new Error('Cannot create short url');
 				}
-				console.log(error);
 			}
 		} while (errorCode);
 	}
