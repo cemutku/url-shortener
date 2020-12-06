@@ -10,13 +10,23 @@ After cloning the project, use the command below for the necessary npm packages 
 ...\url-shortener> npm install
 ```
 
+To spin up a PostgreSQL instance quickly on a container, run the command below:
+
+```bash
+docker run -d --name postgres-dev -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=12345 -v ${pwd}/postgres-data:/var/lib/postgresql/data -p 5432:5432 postgres
+```
+
+Connection string for the database instance which will be created with the docker command above is `CONNECTION_STRING="postgresql://postgres:12345@localhost:5432/postgres"`
+
 ## Usage
 
 Before using the API, you must set the CONNECTION_STRING value in the .env file. Change the name of the ".env_sample" to ".env" then add your environment variables to this file.
 
-Run the `npm start` in the root directory and go check the http://localhost:3000/api for backend API.
+Run the `npm start` in the root directory and go check the http://localhost:5000/api for backend API.
 
 You must be seeing the "message":"Url shortener API is running..." ont the browser then you can thest it from an application like Postman.
+
+![alt text](https://raw.githubusercontent.com/cemutku/url-shortener/main/frontend/src/url-shortener.PNG 'Logo Title Text 1')
 
 ## Test
 
