@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const Main = () => {
+	const [url, setUrl] = useState('');
+	const [shortUrl, setShortUrl] = useState({ value: '', copied: false });
+
+	const shortenHandler = async () => {
+		const { data } = await axios.post(
+			'/api/urls',
+			{ url },
+			{ 'Contenet-Type': 'application/json' }
+		);
+
+		setShortUrl((state) => ({ ...state, value: data.shortUrl }));
+		setUrl(data.shortUrl);
+	};
+
 	return (
 		<main>
 			<div className='container'>
@@ -11,9 +27,25 @@ const Main = () => {
 						type='text'
 						name='url'
 						placeholder='Enter Your Link...'
+						value={url}
+						onChange={(e) => setUrl(e.target.value)}
 					></input>
-					<button className='btn'>Shorten</button>
-					<button className='btn'>Copy</button>
+					{shortUrl.value ? (
+						<CopyToClipboard
+							text={shortUrl.value}
+							onCopy={() =>
+								setShortUrl((state) => ({ ...state, copied: true }))
+							}
+						>
+							<button className='btn'>
+								{shortUrl.copied ? 'Copied' : 'Copy'}
+							</button>
+						</CopyToClipboard>
+					) : (
+						<button className='btn' onClick={shortenHandler}>
+							Shorten
+						</button>
+					)}
 				</div>
 			</div>
 		</main>

@@ -47,6 +47,7 @@ const createShortUrl = asyncHandler(async (req, res) => {
 				]);
 
 				errorCode = null;
+				console.log(hashedUrl);
 				res.status(201).json({
 					shortUrl: `http://${req.headers.host}/${hashedUrl}`,
 				});
